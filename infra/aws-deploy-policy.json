@@ -15,6 +15,7 @@
         "lambda:CreateFunction",
         "lambda:CreateFunctionUrlConfig",
         "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
         "lambda:GetFunctionUrlConfig",
         "lambda:UpdateFunctionCode",
         "lambda:UpdateFunctionConfiguration"
