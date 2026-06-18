@@ -255,6 +255,30 @@ const ensureFunctionUrl = () => {
 		throw new Error(permission.stderr);
 	}
 
+	const invokePermission = spawnSync(
+		"aws",
+		[
+			"lambda",
+			"add-permission",
+			"--function-name",
+			functionName,
+			"--statement-id",
+			"FunctionUrlAllowInvokeFunction",
+			"--action",
+			"lambda:InvokeFunction",
+			"--principal",
+			"*",
+		],
+		{ cwd: rootDir, encoding: "utf8", stdio: "pipe" }
+	);
+
+	if (
+		invokePermission.status !== 0 &&
+		!invokePermission.stderr.includes("ResourceConflictException")
+	) {
+		throw new Error(invokePermission.stderr);
+	}
+
 	return urlConfig.FunctionUrl.replace(TRAILING_SLASH_REGEX, "");
 };
 
