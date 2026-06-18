@@ -2,7 +2,7 @@ import { trpcServer } from "@hono/trpc-server";
 import { createContext } from "@personal-lift/api/context";
 import { appRouter } from "@personal-lift/api/routers/index";
 import { auth } from "@personal-lift/auth";
-import { env } from "@personal-lift/env/server";
+import { corsOrigins } from "@personal-lift/env/server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
@@ -15,7 +15,8 @@ app.use(logger());
 app.use(
 	"/*",
 	cors({
-		origin: env.CORS_ORIGIN,
+		origin: (origin) =>
+			corsOrigins.includes(origin) ? origin : corsOrigins[0],
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		allowHeaders: [
 			"Content-Type",
