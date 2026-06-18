@@ -488,11 +488,12 @@ const main = async () => {
 	ensureBucket({ bucketName, region });
 
 	const originDomain = websiteEndpoint({ bucketName, region });
+	const configuredWebUrl = process.env.WEB_URL ?? env.CORS_ORIGIN;
 	let distribution = null;
-	let webUrl = `http://${originDomain}`;
+	let webUrl = configuredWebUrl ?? `http://${originDomain}`;
 	try {
 		distribution = ensureDistribution({ originDomain });
-		webUrl = `https://${distribution.DomainName}`;
+		webUrl = configuredWebUrl ?? `https://${distribution.DomainName}`;
 	} catch (error) {
 		if (!error.message.includes("account must be verified")) {
 			throw error;

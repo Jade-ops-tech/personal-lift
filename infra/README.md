@@ -32,6 +32,12 @@ pnpm deploy:aws
 ```
 
 The script reads secrets from `apps/server/.env` locally and from environment variables in CI.
+Set `WEB_URL` to the public frontend URL when the frontend is hosted outside AWS, for example:
+
+```bash
+WEB_URL=https://app.numjy.com pnpm deploy:aws
+```
+
 It writes non-secret deployment outputs to `infra/.deploy.json`, which is ignored by git.
 
 ## GitHub Actions secrets
