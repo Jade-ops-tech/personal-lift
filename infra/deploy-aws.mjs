@@ -79,6 +79,11 @@ const requiredEnv = (env, key) => {
 
 const jsonArg = (value) => JSON.stringify(value);
 
+const sleep = (ms) =>
+	new Promise((resolveSleep) => {
+		setTimeout(resolveSleep, ms);
+	});
+
 const ensureLambdaRole = async () => {
 	const existing = awsMaybeJson(["iam", "get-role", "--role-name", roleName]);
 	if (existing?.Role?.Arn) {
@@ -141,7 +146,7 @@ const lambdaEnvironment = ({ env, apiUrl, webUrl }) => ({
 	},
 });
 
-const upsertLambda = ({ roleArn, env, apiUrl, webUrl }) => {
+const upsertLambda = async ({ roleArn, env, apiUrl, webUrl }) => {
 	const environment = lambdaEnvironment({ env, apiUrl, webUrl });
 	const existing = awsMaybeJson([
 		"lambda",
@@ -160,13 +165,7 @@ const upsertLambda = ({ roleArn, env, apiUrl, webUrl }) => {
 			"--zip-file",
 			`fileb://${buildZipPath}`,
 		]);
-		aws([
-			"lambda",
-			"wait",
-			"function-updated",
-			"--function-name",
-			functionName,
-		]);
+		await sleep(8000);
 		aws([
 			"lambda",
 			"update-function-configuration",
@@ -183,13 +182,7 @@ const upsertLambda = ({ roleArn, env, apiUrl, webUrl }) => {
 			"--environment",
 			jsonArg(environment),
 		]);
-		aws([
-			"lambda",
-			"wait",
-			"function-updated",
-			"--function-name",
-			functionName,
-		]);
+		await sleep(8000);
 		return;
 	}
 
@@ -214,7 +207,7 @@ const upsertLambda = ({ roleArn, env, apiUrl, webUrl }) => {
 		"--environment",
 		jsonArg(environment),
 	]);
-	aws(["lambda", "wait", "function-active", "--function-name", functionName]);
+	await sleep(12_000);
 };
 
 const ensureFunctionUrl = () => {
@@ -458,7 +451,7 @@ const main = async () => {
 
 	buildLambdaBundle();
 
-	upsertLambda({
+	await upsertLambda({
 		roleArn,
 		env,
 		apiUrl: "https://example.com",
@@ -472,7 +465,7 @@ const main = async () => {
 	const distribution = ensureDistribution({ originDomain });
 	const webUrl = `https://${distribution.DomainName}`;
 
-	upsertLambda({ roleArn, env, apiUrl, webUrl });
+	await upsertLambda({ roleArn, env, apiUrl, webUrl });
 	deployWeb({ apiUrl, bucketName, distributionId: distribution.Id });
 
 	const state = {
