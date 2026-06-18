@@ -324,7 +324,7 @@ const websiteEndpoint = ({ bucketName, region }) =>
 		: `${bucketName}.s3-website-${region}.amazonaws.com`;
 
 const findDistribution = () => {
-	const distributions = awsJson(["cloudfront", "list-distributions"]);
+	const distributions = awsJson(["cloudfront", "list-distributions"]) ?? {};
 	const items = distributions.DistributionList?.Items ?? [];
 	return items.find((item) => item.Comment === distributionComment) ?? null;
 };
