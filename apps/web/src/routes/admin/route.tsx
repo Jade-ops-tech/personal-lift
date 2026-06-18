@@ -1,0 +1,19 @@
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+
+import { authClient } from "@/lib/auth-client";
+
+export const Route = createFileRoute("/admin")({
+	beforeLoad: async () => {
+		const session = await authClient.getSession();
+		if (!session.data) {
+			throw redirect({ to: "/login" });
+		}
+		return { session };
+	},
+	component: AdminLayout,
+});
+
+// NEURAL_OS 后台页自带固定顶栏/侧栏，此处仅做鉴权守卫与 Outlet 透传。
+function AdminLayout() {
+	return <Outlet />;
+}

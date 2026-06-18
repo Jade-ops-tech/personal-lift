@@ -1,0 +1,24 @@
+{
+  "name": "@personal-lift/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@personal-lift/db": "workspace:*",
+    "@personal-lift/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@personal-lift/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

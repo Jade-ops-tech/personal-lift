@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1560" viewBox="0 0 1080 1560" font-family="'PingFang SC','Microsoft YaHei',Inter,sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#00dbe7"/>
+    </marker>
+    <marker id="arrowDim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5a7d82"/>
+    </marker>
+    <linearGradient id="cyan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e2a30"/>
+      <stop offset="1" stop-color="#0b1a1f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1080" height="1560" fill="#0a0c10"/>
+  <g fill="#0e1117">
+    <pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#10242a"/>
+    </pattern>
+  </g>
+  <rect width="1080" height="1560" fill="url(#grid)" opacity="0.5"/>
+
+  <!-- 标题 -->
+  <text x="540" y="40" text-anchor="middle" font-size="30" font-weight="800" fill="#74f5ff" letter-spacing="1">/jy:ai · 自动开发流水线</text>
+  <text x="540" y="64" text-anchor="middle" font-size="13" fill="#8aa0a3" letter-spacing="3">N1 → N8 节点式 · 严禁跳过 · 每节点先读 jy-ai-nodes/ 规则文件</text>
+
+  <g transform="translate(0,78)">
+
+    <!-- 主竖向连线（按顺序） -->
+    <g stroke="#00dbe7" stroke-width="2" fill="none">
+      <line x1="540" y1="72"  x2="540" y2="100" marker-end="url(#arrow)"/>
+      <line x1="540" y1="166" x2="540" y2="210" marker-end="url(#arrow)"/>
+      <line x1="540" y1="302" x2="540" y2="346" marker-end="url(#arrow)"/>
+      <line x1="540" y1="412" x2="540" y2="456" marker-end="url(#arrow)"/>
+      <line x1="540" y1="536" x2="540" y2="580" marker-end="url(#arrow)"/>
+      <line x1="540" y1="646" x2="540" y2="690" marker-end="url(#arrow)"/>
+      <line x1="540" y1="756" x2="540" y2="800" marker-end="url(#arrow)"/>
+      <line x1="540" y1="866" x2="540" y2="892" marker-end="url(#arrow)"/>
+      <line x1="540" y1="988"  x2="540" y2="1030" marker-end="url(#arrow)"/>
+      <line x1="540" y1="1080" x2="540" y2="1122" marker-end="url(#arrow)"/>
+      <line x1="540" y1="1218" x2="540" y2="1260" marker-end="url(#arrow)"/>
+      <line x1="540" y1="1340" x2="540" y2="1388" marker-end="url(#arrow)"/>
+    </g>
+
+    <!-- 决策分支标签 -->
+    <text x="552" y="1012" font-size="12" fill="#8aa0a3">NO</text>
+    <text x="552" y="1242" font-size="12" fill="#8aa0a3">NO</text>
+
+    <!-- loop back: MORE_TASK YES to N3 -->
+    <g stroke="#fed83a" stroke-width="2" fill="none" stroke-dasharray="6 4">
+      <path d="M445,940 L170,940 L170,379 L320,379" marker-end="url(#arrow)" style="marker-end:none"/>
+      <path d="M170,379 L320,379" marker-end="url(#arrow)"/>
+    </g>
+    <text x="300" y="932" text-anchor="end" font-size="12" fill="#fed83a">YES ↺ 下一个 task</text>
+
+    <!-- loop back: MORE_FEATURE YES to N2 -->
+    <g stroke="#d1bcff" stroke-width="2" fill="none" stroke-dasharray="6 4">
+      <path d="M445,1170 L110,1170 L110,256 L320,256" style="marker-end:none"/>
+      <path d="M110,256 L320,256" marker-end="url(#arrow)"/>
+    </g>
+    <text x="120" y="1162" font-size="12" fill="#d1bcff">YES ↺ 下一个 Feature</text>
+
+    <!-- 旁路徽标连线（虚线） -->
+    <g stroke="#5a7d82" stroke-width="1.5" fill="none" stroke-dasharray="3 3">
+      <line x1="760" y1="256"  x2="800" y2="252"/>
+      <line x1="760" y1="496"  x2="800" y2="494"/>
+      <line x1="760" y1="723"  x2="800" y2="728"/>
+      <line x1="760" y1="1300" x2="800" y2="1308"/>
+    </g>
+
+    <!-- ===== START ===== -->
+    <rect x="460" y="28" width="160" height="44" rx="22" fill="#00f2ff"/>
+    <text x="540" y="56" text-anchor="middle" font-size="18" font-weight="700" fill="#00363a">START</text>
+
+    <!-- ===== 节点盒（复用样式：青色边玻璃面板） ===== -->
+    <!-- N1 -->
+    <rect x="320" y="100" width="440" height="66" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="128" font-size="16" font-weight="700" fill="#74f5ff">N1 · 初始化</text>
+    <text x="344" y="150" font-size="13" fill="#cfe6e8">解析输入 · 扫描 features · 加载 CLAUDE.md / rules / LESSONS.md</text>
+
+    <!-- N2 -->
+    <rect x="320" y="210" width="440" height="92" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="238" font-size="16" font-weight="700" fill="#74f5ff">N2 · 进入 Feature</text>
+    <text x="344" y="260" font-size="13" fill="#cfe6e8">读 specs · 断点恢复（[x]/[DROPPED]/[CHANGED]）· &gt;8 任务自动拆分</text>
+    <text x="344" y="282" font-size="13" fill="#cfe6e8">依赖分析 → 决定 串行 / 并行（并行则派 subagent）</text>
+
+    <!-- N3 -->
+    <rect x="320" y="346" width="440" height="66" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="374" font-size="16" font-weight="700" fill="#74f5ff">N3 · 执行 Task</text>
+    <text x="344" y="396" font-size="13" fill="#cfe6e8">匹配 jy-* skill（串行 inline / 并行 subagent）→ 开发</text>
+
+    <!-- N4 -->
+    <rect x="320" y="456" width="440" height="80" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="484" font-size="16" font-weight="700" fill="#74f5ff">N4 · Review</text>
+    <text x="344" y="506" font-size="13" fill="#cfe6e8">AI 自审（质量 / 逻辑 / 安全 / 性能）</text>
+    <text x="344" y="526" font-size="13" fill="#cfe6e8">→ Codex review（本 task diff）→ ESLint fix</text>
+
+    <!-- N5 -->
+    <rect x="320" y="580" width="440" height="66" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="608" font-size="16" font-weight="700" fill="#74f5ff">N5 · 标记完成</text>
+    <text x="344" y="630" font-size="13" fill="#cfe6e8">tasks.md 改 [x] 并验证 · 必要时追加 LESSONS.md</text>
+
+    <!-- N6 -->
+    <rect x="320" y="690" width="440" height="66" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="718" font-size="16" font-weight="700" fill="#74f5ff">N6 · QA 评估</text>
+    <text x="344" y="740" font-size="13" fill="#cfe6e8">动态评分（≥8）/ 接口·迁移·认证必触发 → 派 jy-qa-engineer</text>
+
+    <!-- N7 -->
+    <rect x="320" y="800" width="440" height="66" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="828" font-size="16" font-weight="700" fill="#74f5ff">N7 · 上下文管理</text>
+    <text x="344" y="850" font-size="13" fill="#cfe6e8">task 完 /clear 重载 specs · 执行中 80% → /compact</text>
+
+    <!-- 决策：还有未完成 task? -->
+    <polygon points="540,892 635,940 540,988 445,940" fill="#11242a" stroke="#fed83a" stroke-width="1.8"/>
+    <text x="540" y="936" text-anchor="middle" font-size="13" font-weight="700" fill="#ffe173">还有未完成</text>
+    <text x="540" y="954" text-anchor="middle" font-size="13" font-weight="700" fill="#ffe173">task?</text>
+
+    <!-- Feature 完成 -->
+    <rect x="380" y="1030" width="320" height="50" rx="10" fill="#0e1b22" stroke="#3a494b" stroke-width="1.5"/>
+    <text x="540" y="1061" text-anchor="middle" font-size="14" fill="#cfe6e8">Feature 完成 → /clear</text>
+
+    <!-- 决策：还有下个 Feature? -->
+    <polygon points="540,1122 645,1170 540,1218 435,1170" fill="#1a132a" stroke="#d1bcff" stroke-width="1.8"/>
+    <text x="540" y="1166" text-anchor="middle" font-size="13" font-weight="700" fill="#e9ddff">还有下个</text>
+    <text x="540" y="1184" text-anchor="middle" font-size="13" font-weight="700" fill="#e9ddff">Feature?</text>
+
+    <!-- N8 -->
+    <rect x="320" y="1260" width="440" height="80" rx="10" fill="url(#cyan)" stroke="#00dbe7" stroke-width="1.5"/>
+    <text x="344" y="1288" font-size="16" font-weight="700" fill="#74f5ff">N8 · 完成</text>
+    <text x="344" y="1310" font-size="13" fill="#cfe6e8">调用 jy-doc-syncer 同步 README / .claude / CHANGELOG</text>
+    <text x="344" y="1330" font-size="13" fill="#cfe6e8">→ 输出总结</text>
+
+    <!-- END -->
+    <rect x="468" y="1388" width="144" height="44" rx="22" fill="#7000ff"/>
+    <text x="540" y="1416" text-anchor="middle" font-size="18" font-weight="700" fill="#f1f2ff">END</text>
+
+    <!-- ===== 旁路徽标（自动化集成） ===== -->
+    <g font-size="13">
+      <rect x="800" y="224" width="240" height="56" rx="8" fill="#0d1d22" stroke="#3a494b"/>
+      <text x="816" y="248" font-size="12" font-weight="700" fill="#74f5ff">⇉ 并行 subagent</text>
+      <text x="816" y="268" font-size="12" fill="#9fb6b8">前端 / 后端 / 数据库</text>
+
+      <rect x="800" y="466" width="240" height="56" rx="8" fill="#0d1d22" stroke="#3a494b"/>
+      <text x="816" y="490" font-size="12" font-weight="700" fill="#74f5ff">Codex review</text>
+      <text x="816" y="510" font-size="12" fill="#9fb6b8">本 task diff + ESLint fix</text>
+
+      <rect x="800" y="700" width="240" height="56" rx="8" fill="#0d1d22" stroke="#3a494b"/>
+      <text x="816" y="724" font-size="12" font-weight="700" fill="#74f5ff">jy-qa-engineer</text>
+      <text x="816" y="744" font-size="12" fill="#9fb6b8">评分 ≥ 8 / 强制项触发</text>
+
+      <rect x="800" y="1280" width="240" height="56" rx="8" fill="#0d1d22" stroke="#3a494b"/>
+      <text x="816" y="1304" font-size="12" font-weight="700" fill="#74f5ff">jy-doc-syncer</text>
+      <text x="816" y="1324" font-size="12" fill="#9fb6b8">文档一致性同步</text>
+    </g>
+
+    <!-- 图例 -->
+    <g font-size="12">
+      <line x1="60" y1="1410" x2="92" y2="1410" stroke="#00dbe7" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="100" y="1414" fill="#9fb6b8">主流程</text>
+      <line x1="60" y1="1432" x2="92" y2="1432" stroke="#fed83a" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="100" y="1436" fill="#9fb6b8">task 循环</text>
+      <line x1="60" y1="1454" x2="92" y2="1454" stroke="#d1bcff" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="100" y="1458" fill="#9fb6b8">feature 循环</text>
+    </g>
+
+  </g>
+</svg>

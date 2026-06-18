@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  personal-lift backend — Hono + tRPC + better-auth，部署为 AWS Lambda（Function URL 暴露）。
+  产物由 `pnpm --filter server build:lambda` 预先打包到 dist-lambda/，本模板直接打 zip 上传。
+
+Parameters:
+  DatabaseUrl:
+    Type: String
+    NoEcho: true
+    Description: Postgres 连接串（如 Neon），形如 postgresql://user:pass@host/db?sslmode=require
+  BetterAuthSecret:
+    Type: String
+    NoEcho: true
+    Description: better-auth 密钥（至少 32 字符）
+  CorsOrigin:
+    Type: String
+    Description: 允许的前端来源，如 https://your-frontend.example.com（含协议，无尾斜杠）
+  BetterAuthUrl:
+    Type: String
+    Default: "http://localhost:3000"
+    Description: >
+      后端公网地址。首次部署可留默认值，部署完成后把输出的 ApiUrl（去掉尾斜杠）
+      回填到这里再 `sam deploy` 一次。
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 30
+    MemorySize: 512
+    Architectures:
+      - arm64
+
+Resources:
+  HonoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: personal-lift-api
+      CodeUri: dist-lambda/
+      Handler: index.handler
+      Environment:
+        Variables:
+          DATABASE_URL: !Ref DatabaseUrl
+          BETTER_AUTH_SECRET: !Ref BetterAuthSecret
+          BETTER_AUTH_URL: !Ref BetterAuthUrl
+          CORS_ORIGIN: !Ref CorsOrigin
+      FunctionUrlConfig:
+        AuthType: NONE
+        InvokeMode: BUFFERED
+
+Outputs:
+  ApiUrl:
+    Description: Lambda Function URL（填到前端 VITE_SERVER_URL，并回填 BetterAuthUrl 参数）
+    Value: !GetAtt HonoFunctionUrl.FunctionUrl
+  FunctionName:
+    Description: Lambda 函数名
+    Value: !Ref HonoFunction

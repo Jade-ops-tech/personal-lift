@@ -1,0 +1,40 @@
+{
+  "name": "personal-lift",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "test": "echo \"No tests configured yet\" && exit 0",
+    "dev:web": "turbo -F web dev",
+    "dev:server": "turbo -F server dev",
+    "db:push": "turbo -F @personal-lift/db db:push",
+    "db:studio": "turbo -F @personal-lift/db db:studio",
+    "db:generate": "turbo -F @personal-lift/db db:generate",
+    "db:migrate": "turbo -F @personal-lift/db db:migrate",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "deploy:aws": "node infra/deploy-aws.mjs",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@personal-lift/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.16",
+    "@personal-lift/config": "workspace:*",
+    "@types/node": "catalog:",
+    "husky": "latest",
+    "turbo": "^2.9.16",
+    "typescript": "catalog:",
+    "ultracite": "7.8.3"
+  },
+  "packageManager": "pnpm@11.7.0"
+}

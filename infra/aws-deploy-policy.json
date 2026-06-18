@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "IdentityCheck",
+      "Effect": "Allow",
+      "Action": "sts:GetCallerIdentity",
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaDeploy",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:AddPermission",
+        "lambda:CreateFunction",
+        "lambda:CreateFunctionUrlConfig",
+        "lambda:GetFunction",
+        "lambda:GetFunctionUrlConfig",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration"
+      ],
+      "Resource": "arn:aws:lambda:us-west-2:638111422252:function:personal-lift-api"
+    },
+    {
+      "Sid": "LambdaRoleManagement",
+      "Effect": "Allow",
+      "Action": [
+        "iam:AttachRolePolicy",
+        "iam:CreateRole",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "arn:aws:iam::638111422252:role/personal-lift-lambda-role"
+    },
+    {
+      "Sid": "LambdaBasicPolicyRead",
+      "Effect": "Allow",
+      "Action": "iam:GetPolicy",
+      "Resource": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+    },
+    {
+      "Sid": "S3WebDeploy",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:DeleteObject",
+        "s3:GetBucketLocation",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy",
+        "s3:PutBucketPublicAccessBlock",
+        "s3:PutBucketWebsite",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::personal-lift-web-638111422252-us-west-2",
+        "arn:aws:s3:::personal-lift-web-638111422252-us-west-2/*"
+      ]
+    },
+    {
+      "Sid": "CloudFrontDeploy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateDistribution",
+        "cloudfront:CreateInvalidation",
+        "cloudfront:GetDistribution",
+        "cloudfront:ListDistributions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
