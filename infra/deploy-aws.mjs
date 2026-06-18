@@ -429,15 +429,17 @@ const deployWeb = ({ apiUrl, bucketName, distributionId }) => {
 		}
 	);
 
-	console.log("Creating CloudFront invalidation...");
-	aws([
-		"cloudfront",
-		"create-invalidation",
-		"--distribution-id",
-		distributionId,
-		"--paths",
-		"/*",
-	]);
+	if (distributionId) {
+		console.log("Creating CloudFront invalidation...");
+		aws([
+			"cloudfront",
+			"create-invalidation",
+			"--distribution-id",
+			distributionId,
+			"--paths",
+			"/*",
+		]);
+	}
 };
 
 const main = async () => {
@@ -462,11 +464,22 @@ const main = async () => {
 	ensureBucket({ bucketName, region });
 
 	const originDomain = websiteEndpoint({ bucketName, region });
-	const distribution = ensureDistribution({ originDomain });
-	const webUrl = `https://${distribution.DomainName}`;
+	let distribution = null;
+	let webUrl = `http://${originDomain}`;
+	try {
+		distribution = ensureDistribution({ originDomain });
+		webUrl = `https://${distribution.DomainName}`;
+	} catch (error) {
+		if (!error.message.includes("account must be verified")) {
+			throw error;
+		}
+		console.warn(
+			"CloudFront is not available for this AWS account yet. Falling back to S3 website hosting."
+		);
+	}
 
 	await upsertLambda({ roleArn, env, apiUrl, webUrl });
-	deployWeb({ apiUrl, bucketName, distributionId: distribution.Id });
+	deployWeb({ apiUrl, bucketName, distributionId: distribution?.Id });
 
 	const state = {
 		region,
@@ -474,7 +487,7 @@ const main = async () => {
 		functionName,
 		apiUrl,
 		bucketName,
-		distributionId: distribution.Id,
+		distributionId: distribution?.Id ?? null,
 		webUrl,
 	};
 
