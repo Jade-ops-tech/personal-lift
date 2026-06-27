@@ -4,20 +4,20 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  server: {
-    host: "127.0.0.1",
-    port: 5174,
-    strictPort: true,
-  },
-  resolve: {
-    tsconfigPaths: true,
-  },
-  plugins: [
-    tailwindcss(),
-    tanstackRouter({
-      target: "react",
-      autoCodeSplitting: true,
-    }),
-    react(),
-  ],
+	server: {
+		host: "127.0.0.1",
+		port: 5174,
+		strictPort: true,
+	},
+	resolve: {
+		tsconfigPaths: true,
+	},
+	plugins: [
+		tailwindcss(),
+		tanstackRouter({
+			target: "react",
+			autoCodeSplitting: true,
+		}),
+		react(),
+	],
 });

@@ -110,12 +110,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -202,12 +198,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -217,9 +209,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -283,9 +273,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -542,12 +530,8 @@
           "name": "record_user_id_user_id_fk",
           "tableFrom": "record",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -597,12 +581,8 @@
           "name": "record_tag_record_id_record_id_fk",
           "tableFrom": "record_tag",
           "tableTo": "record",
-          "columnsFrom": [
-            "record_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["record_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -610,12 +590,8 @@
           "name": "record_tag_tag_id_tag_id_fk",
           "tableFrom": "record_tag",
           "tableTo": "tag",
-          "columnsFrom": [
-            "tag_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tag_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -623,10 +599,7 @@
       "compositePrimaryKeys": {
         "record_tag_record_id_tag_id_pk": {
           "name": "record_tag_record_id_tag_id_pk",
-          "columns": [
-            "record_id",
-            "tag_id"
-          ]
+          "columns": ["record_id", "tag_id"]
         }
       },
       "uniqueConstraints": {},
@@ -666,9 +639,7 @@
         "tag_name_unique": {
           "name": "tag_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -732,12 +703,8 @@
           "name": "summary_user_id_user_id_fk",
           "tableFrom": "summary",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -747,11 +714,7 @@
         "summary_user_type_period_uq": {
           "name": "summary_user_type_period_uq",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id",
-            "type",
-            "period_key"
-          ]
+          "columns": ["user_id", "type", "period_key"]
         }
       },
       "policies": {},
@@ -763,42 +726,22 @@
     "public.category": {
       "name": "category",
       "schema": "public",
-      "values": [
-        "学习",
-        "工作",
-        "生活",
-        "想法",
-        "待办",
-        "其他"
-      ]
+      "values": ["学习", "工作", "生活", "想法", "待办", "其他"]
     },
     "public.record_status": {
       "name": "record_status",
       "schema": "public",
-      "values": [
-        "normal",
-        "pending",
-        "done",
-        "archived"
-      ]
+      "values": ["normal", "pending", "done", "archived"]
     },
     "public.todo_status": {
       "name": "todo_status",
       "schema": "public",
-      "values": [
-        "pending",
-        "in_progress",
-        "done",
-        "cancelled"
-      ]
+      "values": ["pending", "in_progress", "done", "cancelled"]
     },
     "public.summary_type": {
       "name": "summary_type",
       "schema": "public",
-      "values": [
-        "daily",
-        "weekly"
-      ]
+      "values": ["daily", "weekly"]
     }
   },
   "schemas": {},
