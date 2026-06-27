@@ -60,13 +60,13 @@ export default function SignUpForm({
 	}
 
 	return (
-		<div className="glass-panel w-full rounded-[8px] p-6">
-			<h1 className="mb-6 text-center font-bold font-headline-md text-headline-lg text-primary-fixed">
+		<div className="glass-panel w-full rounded-[8px] p-8">
+			<h1 className="mb-8 text-center font-bold font-headline-md text-headline-lg text-primary-fixed">
 				创建账号
 			</h1>
 
 			<form
-				className="space-y-4"
+				className="space-y-6"
 				onSubmit={(e) => {
 					e.preventDefault();
 					e.stopPropagation();
@@ -168,7 +168,7 @@ export default function SignUpForm({
 				</form.Subscribe>
 			</form>
 
-			<div className="mt-4 text-center">
+			<div className="mt-6 text-center">
 				<Button
 					className="font-label-mono text-label-mono text-primary-fixed hover:text-primary-fixed-dim"
 					onClick={onSwitchToSignIn}

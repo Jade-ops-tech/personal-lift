@@ -22,11 +22,11 @@ function LoginScreen() {
 				}}
 			/>
 			<div className="relative w-full max-w-md">
-				<div className="mb-8 text-center">
+				<div className="mb-10 text-center">
 					<div className="font-bold font-headline-md text-2xl text-primary-fixed tracking-tighter drop-shadow-[0_0_10px_rgba(0,219,231,0.5)]">
 						NEURAL_OS
 					</div>
-					<p className="mt-1 font-label-mono text-label-mono text-on-surface-variant uppercase tracking-[0.2em]">
+					<p className="mt-2 font-label-mono text-label-mono text-on-surface-variant uppercase tracking-[0.2em]">
 						神经接入认证
 					</p>
 				</div>
