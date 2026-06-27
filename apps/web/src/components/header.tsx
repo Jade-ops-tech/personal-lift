@@ -3,10 +3,7 @@ import { Link } from "@tanstack/react-router";
 import UserMenu from "./user-menu";
 
 const LINKS = [
-	{ to: "/", label: "首页" },
-	{ to: "/h5", label: "随手记" },
-	{ to: "/h5/todos", label: "待办" },
-	{ to: "/h5/summary", label: "总结" },
+	{ to: "/h5", label: "H5" },
 	{ to: "/admin/records", label: "后台" },
 ] as const;
 
@@ -23,7 +20,6 @@ export default function Header() {
 				<nav className="hidden gap-1 md:flex">
 					{LINKS.map(({ to, label }) => (
 						<Link
-							activeOptions={{ exact: to === "/" }}
 							activeProps={{
 								className:
 									"rounded-[2px] bg-primary-container/10 px-3 py-1 font-label-mono text-label-mono text-primary-fixed",

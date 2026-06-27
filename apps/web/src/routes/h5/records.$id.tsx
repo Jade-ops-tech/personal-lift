@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { type ReactNode, useEffect, useState } from "react";
 
+import { H5AppShell } from "@/components/h5-app-shell";
 import { categoryStyle } from "@/lib/neural";
 import { trpc } from "@/utils/trpc";
 
@@ -45,23 +46,6 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 			</span>
 			{children}
 		</div>
-	);
-}
-
-function DetailHeader() {
-	return (
-		<header className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between border-outline-variant/10 border-b bg-surface/10 px-margin-mobile shadow-[0_0_15px_rgba(0,242,255,0.1)] backdrop-blur-xl md:px-margin-desktop">
-			<Link
-				className="flex items-center gap-2 text-on-surface-variant transition-colors hover:text-primary-fixed"
-				to="/h5"
-			>
-				<span className="material-symbols-outlined">arrow_back</span>
-				<span className="font-label-mono text-label-mono">返回记录流</span>
-			</Link>
-			<span className="font-bold font-headline-md text-headline-md text-primary-fixed tracking-tighter drop-shadow-[0_0_10px_rgba(0,219,231,0.5)]">
-				NEURAL_OS
-			</span>
-		</header>
 	);
 }
 
@@ -112,9 +96,15 @@ function RecordDetailScreen() {
 	const style = categoryStyle(category);
 
 	return (
-		<div className="min-h-screen font-body-md text-on-surface">
-			<DetailHeader />
-			<main className="mx-auto max-w-2xl px-margin-mobile pt-24 pb-16">
+		<H5AppShell>
+			<div className="mx-auto max-w-2xl">
+				<Link
+					className="mb-6 inline-flex items-center gap-2 text-on-surface-variant transition-colors hover:text-primary-fixed"
+					to="/h5"
+				>
+					<span className="material-symbols-outlined">arrow_back</span>
+					<span className="font-label-mono text-label-mono">返回记录流</span>
+				</Link>
 				{detail.isLoading ? (
 					<div className="flex justify-center py-20">
 						<span className="material-symbols-outlined animate-spin text-primary-fixed">
@@ -243,7 +233,7 @@ function RecordDetailScreen() {
 						</div>
 					</div>
 				) : null}
-			</main>
-		</div>
+			</div>
+		</H5AppShell>
 	);
 }

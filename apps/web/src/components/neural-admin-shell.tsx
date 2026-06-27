@@ -23,6 +23,11 @@ const NAV: { key: AdminNavKey; icon: string; label: string; to: string }[] = [
 	},
 ];
 
+const activeBottomClass =
+	"flex flex-col items-center gap-1 font-bold text-primary-fixed";
+const inactiveBottomClass =
+	"flex flex-col items-center gap-1 text-on-surface-variant opacity-60";
+
 export function NeuralAdminShell({
 	active,
 	children,
@@ -81,9 +86,24 @@ export function NeuralAdminShell({
 			</aside>
 
 			{/* 主内容 */}
-			<main className="min-h-screen px-margin-mobile pt-24 pb-12 md:pr-margin-desktop md:pl-64">
+			<main className="min-h-screen px-margin-mobile pt-24 pb-24 md:pr-margin-desktop md:pl-64">
 				<div className="mx-auto max-w-[1100px] space-y-lg">{children}</div>
 			</main>
+
+			<nav className="glass-panel fixed bottom-0 left-0 z-50 flex h-20 w-full items-center justify-around border-t-0 px-2 md:hidden">
+				{NAV.map((item) => (
+					<Link
+						className={
+							item.key === active ? activeBottomClass : inactiveBottomClass
+						}
+						key={item.key}
+						to={item.to}
+					>
+						<span className="material-symbols-outlined">{item.icon}</span>
+						<span className="font-label-mono text-[10px]">{item.label}</span>
+					</Link>
+				))}
+			</nav>
 
 			{/* 环境网格点 */}
 			<div

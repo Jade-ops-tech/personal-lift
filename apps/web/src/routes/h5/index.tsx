@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { type FormEvent, useState } from "react";
 
+import { H5AppShell } from "@/components/h5-app-shell";
 import { categoryStyle, formatHM } from "@/lib/neural";
 import { trpc } from "@/utils/trpc";
 
@@ -44,31 +45,8 @@ function RecordStreamScreen() {
 		: 0;
 
 	return (
-		<div className="overflow-x-hidden font-body-md text-on-surface antialiased">
-			{/* 顶部导航 */}
-			<header className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between border-outline-variant/10 border-b bg-surface/10 px-margin-mobile shadow-[0_0_15px_rgba(0,242,255,0.1)] backdrop-blur-xl md:px-margin-desktop">
-				<div className="flex items-center gap-2">
-					<span className="font-bold font-headline-md text-headline-md text-primary-fixed tracking-tighter drop-shadow-[0_0_10px_rgba(0,219,231,0.5)]">
-						NEURAL_OS
-					</span>
-				</div>
-				<div className="flex items-center gap-4">
-					<button
-						className="rounded-full p-2 text-on-surface-variant transition-colors duration-300 hover:bg-[#e1fdff]/10"
-						type="button"
-					>
-						<span className="material-symbols-outlined">notifications</span>
-					</button>
-					<Link
-						className="rounded-full p-2 text-on-surface-variant transition-colors duration-300 hover:bg-[#e1fdff]/10"
-						to="/h5/summary"
-					>
-						<span className="material-symbols-outlined">analytics</span>
-					</Link>
-				</div>
-			</header>
-
-			<main className="mx-auto max-w-2xl space-y-8 px-margin-mobile pt-24 pb-32">
+		<H5AppShell>
+			<div className="mx-auto max-w-2xl space-y-8">
 				{/* 录入区 */}
 				<section className="space-y-4">
 					<form
@@ -241,47 +219,7 @@ function RecordStreamScreen() {
 						);
 					})}
 				</section>
-			</main>
-
-			{/* 底部导航（移动端） */}
-			<nav className="glass-panel fixed bottom-0 left-0 z-50 flex h-20 w-full items-center justify-around border-t-0 px-4 md:hidden">
-				<Link
-					className="flex flex-col items-center gap-1 font-bold text-primary-fixed"
-					to="/h5"
-				>
-					<span className="material-symbols-outlined">dynamic_feed</span>
-					<span className="font-label-mono text-[10px]">动态</span>
-				</Link>
-				<Link
-					className="flex flex-col items-center gap-1 text-on-surface-variant opacity-60"
-					to="/h5/todos"
-				>
-					<span className="material-symbols-outlined">grid_view</span>
-					<span className="font-label-mono text-[10px]">待办</span>
-				</Link>
-				<div className="relative -top-6">
-					<button
-						className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-container text-on-primary-fixed shadow-[0_0_20px_rgba(0,242,255,0.4)] transition-transform active:scale-90 disabled:opacity-50"
-						disabled={createMutation.isPending || !content.trim()}
-						onClick={() => {
-							const trimmed = content.trim();
-							if (trimmed) {
-								createMutation.mutate({ content: trimmed });
-							}
-						}}
-						type="button"
-					>
-						<span className="material-symbols-outlined text-3xl">add</span>
-					</button>
-				</div>
-				<Link
-					className="flex flex-col items-center gap-1 text-on-surface-variant opacity-60"
-					to="/h5/summary"
-				>
-					<span className="material-symbols-outlined">monitoring</span>
-					<span className="font-label-mono text-[10px]">总结</span>
-				</Link>
-			</nav>
-		</div>
+			</div>
+		</H5AppShell>
 	);
 }

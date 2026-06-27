@@ -11,26 +11,14 @@ const ENTRIES = [
 	{
 		to: "/h5",
 		icon: "dynamic_feed",
-		title: "记录流",
-		desc: "随手捕捉，AI 自动识别分类与标签",
-	},
-	{
-		to: "/h5/todos",
-		icon: "grid_view",
-		title: "待跟进中心",
-		desc: "任务矩阵，逾期/今日/明日一览",
-	},
-	{
-		to: "/h5/summary",
-		icon: "monitoring",
-		title: "总结回顾",
-		desc: "每日/每周综合分析与趋势",
+		title: "H5 使用入口",
+		desc: "随手记录、待跟进、每日总结，适合手机和浏览器日常打开",
 	},
 	{
 		to: "/admin/records",
 		icon: "admin_panel_settings",
-		title: "后台管理",
-		desc: "记录 / 待办 / 标签 / 总结",
+		title: "后台管理入口",
+		desc: "集中管理记录、待办、标签和总结，适合桌面分析与维护",
 	},
 ] as const;
 
@@ -53,10 +41,10 @@ function HomeScreen() {
 					个人提升系统
 				</span>
 				<h1 className="mt-2 font-extrabold font-headline-md text-4xl text-primary-fixed-dim tracking-tighter drop-shadow-[0_0_12px_rgba(0,219,231,0.3)] md:text-5xl">
-					NEURAL_OS
+					Personal Lift
 				</h1>
 				<p className="mt-3 whitespace-nowrap font-body-md text-on-surface-variant">
-					把零散的念头化作结构化的进展。记录、待办、总结，一套神经接口全部接管。
+					手机端负责随手记录和查看进展，后台负责整理、分析与数据管理。
 				</p>
 			</section>
 

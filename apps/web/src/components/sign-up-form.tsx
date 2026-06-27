@@ -36,7 +36,7 @@ export default function SignUpForm({
 				{
 					onSuccess: () => {
 						navigate({
-							to: "/dashboard",
+							to: "/h5",
 						});
 						toast.success("注册成功");
 					},

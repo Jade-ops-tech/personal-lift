@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { H5AppShell } from "@/components/h5-app-shell";
 import { categoryStyle, dueCountdown, formatHM, isOverdue } from "@/lib/neural";
 import { trpc } from "@/utils/trpc";
 
@@ -17,12 +18,6 @@ const FILTERS = [
 	{ value: "tomorrow", label: "明日" },
 ] as const;
 type Filter = (typeof FILTERS)[number]["value"];
-
-const SIDE_NAV = [
-	{ icon: "grid_view", label: "任务矩阵", to: "/h5/todos", active: true },
-	{ icon: "dynamic_feed", label: "记录流", to: "/h5", active: false },
-	{ icon: "monitoring", label: "总结回顾", to: "/h5/summary", active: false },
-] as const;
 
 const LOAD_BARS = [42, 58, 85, 45, 70, 95, 30, 65, 55, 80, 40, 25];
 const BAR_OPACITY = [
@@ -77,83 +72,8 @@ function FollowUpScreen() {
 	const [highlight, ...rest] = list;
 
 	return (
-		<div className="bg-surface-container-lowest font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
-			<div
-				className="pointer-events-none fixed inset-0 opacity-[0.05]"
-				style={{
-					backgroundImage: "radial-gradient(#00dbe7 0.5px, transparent 0.5px)",
-					backgroundSize: "20px 20px",
-				}}
-			/>
-
-			{/* 顶栏 */}
-			<header className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between border-outline-variant/10 border-b bg-surface/10 px-margin-mobile shadow-[0_0_15px_rgba(0,242,255,0.1)] backdrop-blur-xl md:px-margin-desktop">
-				<div className="flex items-center gap-4">
-					<Link
-						className="font-bold font-headline-md text-headline-md text-primary-fixed tracking-tighter drop-shadow-[0_0_10px_rgba(0,219,231,0.5)]"
-						to="/h5"
-					>
-						NEURAL_OS
-					</Link>
-					<div className="ml-8 hidden gap-6 md:flex">
-						<span className="font-bold font-label-mono text-label-mono text-primary-fixed">
-							任务矩阵
-						</span>
-						<Link
-							className="font-label-mono text-label-mono text-on-surface-variant"
-							to="/h5"
-						>
-							记录流
-						</Link>
-					</div>
-				</div>
-				<div className="flex items-center gap-3">
-					<div className="glass-panel flex items-center gap-1 rounded-full px-3 py-1">
-						<span
-							className="material-symbols-outlined text-[16px] text-primary-fixed"
-							style={{ fontVariationSettings: "'FILL' 1" }}
-						>
-							sensors
-						</span>
-						<span className="font-label-mono text-[10px] text-primary-fixed">
-							实时同步
-						</span>
-					</div>
-				</div>
-			</header>
-
-			{/* 侧边导航（桌面端） */}
-			<nav className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-outline-variant/10 border-r bg-surface-container-lowest/80 pt-20 pb-8 shadow-[5px_0_15px_rgba(0,242,255,0.05)] backdrop-blur-xl md:flex">
-				<div className="mb-8 px-6">
-					<div className="font-bold font-headline-md text-headline-md text-primary-fixed">
-						智能中心
-					</div>
-					<div className="font-label-mono text-[10px] text-on-surface-variant opacity-60">
-						v4.0 运行中
-					</div>
-				</div>
-				<div className="flex flex-1 flex-col">
-					{SIDE_NAV.map((item) => (
-						<Link
-							className={
-								item.active
-									? "flex items-center gap-3 border-primary-fixed border-l-2 bg-primary-container/10 px-6 py-3 text-primary-fixed transition-all duration-300"
-									: "flex items-center gap-3 px-6 py-3 text-on-surface-variant opacity-60 transition-all duration-300 hover:bg-[#e1fdff]/5 hover:opacity-100"
-							}
-							key={item.label}
-							to={item.to}
-						>
-							<span className="material-symbols-outlined">{item.icon}</span>
-							<span className="font-label-mono text-label-mono">
-								{item.label}
-							</span>
-						</Link>
-					))}
-				</div>
-			</nav>
-
-			{/* 主内容 */}
-			<main className="min-h-screen px-margin-mobile pt-20 pb-24 md:pr-margin-desktop md:pl-72">
+		<H5AppShell>
+			<div className="mx-auto max-w-[1440px]">
 				{/* 头部与统计 */}
 				<div className="mb-8 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
 					<div className="space-y-1">
@@ -407,37 +327,7 @@ function FollowUpScreen() {
 						</div>
 					</div>
 				</div>
-			</main>
-
-			{/* 底部导航（移动端） */}
-			<nav className="fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-around border-outline-variant/10 border-t bg-surface/10 px-margin-mobile shadow-[0_-5px_15px_rgba(0,0,0,0.3)] backdrop-blur-xl md:hidden">
-				<Link
-					className="flex flex-col items-center gap-1 text-on-surface-variant"
-					to="/h5"
-				>
-					<span className="material-symbols-outlined">dynamic_feed</span>
-					<span className="font-label-mono text-[10px]">动态</span>
-				</Link>
-				<Link
-					className="flex flex-col items-center gap-1 text-primary-fixed"
-					to="/h5/todos"
-				>
-					<span
-						className="material-symbols-outlined"
-						style={{ fontVariationSettings: "'FILL' 1" }}
-					>
-						grid_view
-					</span>
-					<span className="font-label-mono text-[10px]">待办</span>
-				</Link>
-				<Link
-					className="flex flex-col items-center gap-1 text-on-surface-variant"
-					to="/h5/summary"
-				>
-					<span className="material-symbols-outlined">monitoring</span>
-					<span className="font-label-mono text-[10px]">总结</span>
-				</Link>
-			</nav>
-		</div>
+			</div>
+		</H5AppShell>
 	);
 }

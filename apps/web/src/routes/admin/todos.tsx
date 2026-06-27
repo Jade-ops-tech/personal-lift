@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
+import { NeuralAdminShell } from "@/components/neural-admin-shell";
 import { dueCountdown, isOverdue } from "@/lib/neural";
 import { trpc } from "@/utils/trpc";
 
@@ -8,18 +9,6 @@ import { trpc } from "@/utils/trpc";
 export const Route = createFileRoute("/admin/todos")({
 	component: AdminTodosScreen,
 });
-
-const SIDE_NAV = [
-	{ icon: "grid_view", label: "记录管理", to: "/admin/records", active: false },
-	{ icon: "checklist", label: "待办管理", to: "/admin/todos", active: true },
-	{ icon: "sell", label: "标签管理", to: "/admin/tags", active: false },
-	{
-		icon: "summarize",
-		label: "总结管理",
-		to: "/admin/summaries",
-		active: false,
-	},
-] as const;
 
 interface Priority {
 	badge: string;
@@ -112,69 +101,18 @@ function AdminTodosScreen() {
 		: 0;
 
 	return (
-		<div className="overflow-hidden font-body-md text-body-md text-on-surface">
-			{/* 顶栏 */}
-			<header className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between border-outline-variant/10 border-b bg-surface/10 px-margin-desktop shadow-[0_0_15px_rgba(0,242,255,0.1)] backdrop-blur-xl">
-				<div className="flex items-center gap-8">
-					<span className="font-bold font-headline-md text-headline-md text-primary-fixed tracking-tighter drop-shadow-[0_0_10px_rgba(0,219,231,0.5)]">
-						NEURAL_OS
-					</span>
-					<div className="hidden items-center gap-6 md:flex">
-						<span className="cursor-pointer font-bold font-label-mono text-label-mono text-primary-fixed">
-							核心进程
-						</span>
-						<Link
-							className="cursor-pointer rounded-[2px] px-3 py-1 font-label-mono text-label-mono text-on-surface-variant transition-colors hover:bg-[#e1fdff]/10"
-							to="/admin/records"
-						>
-							记录管理
-						</Link>
-					</div>
-				</div>
-				<div className="flex items-center gap-4">
-					<span className="material-symbols-outlined cursor-pointer text-on-surface-variant transition-colors hover:text-primary-fixed">
-						notifications
-					</span>
-				</div>
-			</header>
-
-			{/* 侧边导航 */}
-			<nav className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-outline-variant/10 border-r bg-surface-container-lowest/80 pt-20 pb-8 shadow-[5px_0_15px_rgba(0,242,255,0.05)] backdrop-blur-xl md:flex">
-				<div className="mb-8 px-6">
-					<div className="mb-1 flex items-center gap-3">
-						<div className="h-2 w-2 animate-pulse rounded-full bg-primary-fixed" />
-						<span className="font-headline-md text-headline-md text-primary-fixed uppercase tracking-widest">
-							智能中枢
-						</span>
-					</div>
-					<span className="font-label-mono text-label-mono text-on-surface-variant opacity-60">
-						v4.0 运行中
-					</span>
-				</div>
-				<div className="flex flex-1 flex-col">
-					{SIDE_NAV.map((item) => (
-						<Link
-							className={
-								item.active
-									? "flex items-center gap-3 border-primary-fixed border-l-2 bg-primary-container/10 px-6 py-3 text-primary-fixed transition-all duration-300"
-									: "flex items-center gap-3 px-6 py-3 text-on-surface-variant opacity-60 transition-all duration-300 hover:bg-[#e1fdff]/5 hover:opacity-100"
-							}
-							key={item.label}
-							to={item.to}
-						>
-							<span className="material-symbols-outlined">{item.icon}</span>
-							<span className="font-label-mono text-label-mono">
-								{item.label}
-							</span>
-						</Link>
-					))}
-				</div>
-			</nav>
-
-			{/* 主内容 */}
-			<main className="flex h-screen flex-row overflow-hidden pt-16 md:ml-64">
+		<NeuralAdminShell active="todos">
+			<div className="flex flex-row gap-gutter">
 				{/* 仪表板画布 */}
-				<div className="custom-scrollbar relative flex-1 overflow-y-auto p-8">
+				<div className="relative min-w-0 flex-1">
+					<div className="mb-8">
+						<h1 className="mb-1 font-headline-lg text-headline-lg text-primary-fixed">
+							待办管理
+						</h1>
+						<p className="font-label-mono text-label-mono text-on-surface-variant">
+							活跃任务 {pendingCount} 条 · 逾期 {overdueCount} 条
+						</p>
+					</div>
 					{/* 统计卡 */}
 					<div className="relative z-10 mb-10 grid grid-cols-1 gap-gutter md:grid-cols-3">
 						<div className="glass-panel group p-6 transition-all duration-500 hover:border-primary-fixed/40">
@@ -443,7 +381,7 @@ function AdminTodosScreen() {
 						</p>
 					</div>
 				</aside>
-			</main>
-		</div>
+			</div>
+		</NeuralAdminShell>
 	);
 }
