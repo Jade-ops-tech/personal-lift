@@ -1,14 +1,21 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(git push *)",
+      "Bash(pnpm check *)",
+      "Bash(git commit -m ' *)"
+    ]
+  },
   "hooks": {
     "PostToolUse": [
       {
+        "matcher": "Write|Edit",
         "hooks": [
           {
-            "command": "pnpm run fix --skip=correctness/noUnusedImports",
-            "type": "command"
+            "type": "command",
+            "command": "pnpm run fix --skip=correctness/noUnusedImports"
           }
-        ],
-        "matcher": "Write|Edit"
+        ]
       }
     ]
   }
