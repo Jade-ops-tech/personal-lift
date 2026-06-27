@@ -17,6 +17,7 @@ apps/web/src/routeTree.gen.ts
 .env*.local
 
 # IDEs and editors
+.codex
 .claude/settings.local.json
 .vscode/*
 !.vscode/settings.json
