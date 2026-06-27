@@ -50,6 +50,7 @@ function RootComponent() {
 	const isFullBleed = FULL_BLEED_PREFIXES.some(
 		(prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
 	);
+	const showDevtools = import.meta.env.DEV && !isFullBleed;
 
 	return (
 		<>
@@ -70,8 +71,12 @@ function RootComponent() {
 				)}
 				<Toaster richColors />
 			</ThemeProvider>
-			<TanStackRouterDevtools position="bottom-left" />
-			<ReactQueryDevtools buttonPosition="bottom-right" position="bottom" />
+			{showDevtools ? (
+				<>
+					<TanStackRouterDevtools position="bottom-left" />
+					<ReactQueryDevtools buttonPosition="bottom-right" position="bottom" />
+				</>
+			) : null}
 		</>
 	);
 }

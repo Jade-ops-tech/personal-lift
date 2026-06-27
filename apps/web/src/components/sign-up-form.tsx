@@ -60,10 +60,13 @@ export default function SignUpForm({
 	}
 
 	return (
-		<div className="glass-panel w-full rounded-[8px] p-8">
-			<h1 className="mb-8 text-center font-bold font-headline-md text-headline-lg text-primary-fixed">
-				创建账号
-			</h1>
+		<div className="w-full rounded-[8px] border border-border bg-card/95 p-6 shadow-black/20 shadow-xl backdrop-blur md:p-8">
+			<div className="mb-8 text-center">
+				<h1 className="font-bold text-2xl text-card-foreground">创建账号</h1>
+				<p className="mt-2 text-muted-foreground text-sm">
+					创建账号后开始管理你的个人进展
+				</p>
+			</div>
 
 			<form
 				className="space-y-6"
@@ -79,6 +82,7 @@ export default function SignUpForm({
 							<div className="space-y-2">
 								<Label htmlFor={field.name}>名称</Label>
 								<Input
+									className="h-11 rounded-[6px] px-3 text-sm"
 									id={field.name}
 									name={field.name}
 									onBlur={field.handleBlur}
@@ -104,6 +108,7 @@ export default function SignUpForm({
 							<div className="space-y-2">
 								<Label htmlFor={field.name}>邮箱</Label>
 								<Input
+									className="h-11 rounded-[6px] px-3 text-sm"
 									id={field.name}
 									name={field.name}
 									onBlur={field.handleBlur}
@@ -130,6 +135,7 @@ export default function SignUpForm({
 							<div className="space-y-2">
 								<Label htmlFor={field.name}>密码</Label>
 								<Input
+									className="h-11 rounded-[6px] px-3 text-sm"
 									id={field.name}
 									name={field.name}
 									onBlur={field.handleBlur}
@@ -158,7 +164,7 @@ export default function SignUpForm({
 				>
 					{({ canSubmit, isSubmitting }) => (
 						<Button
-							className="w-full bg-primary-container font-bold font-label-mono text-on-primary-fixed shadow-[0_0_15px_rgba(0,242,255,0.3)] hover:brightness-110"
+							className="h-11 w-full rounded-[6px] font-medium text-sm"
 							disabled={!canSubmit || isSubmitting}
 							type="submit"
 						>
@@ -170,8 +176,9 @@ export default function SignUpForm({
 
 			<div className="mt-6 text-center">
 				<Button
-					className="font-label-mono text-label-mono text-primary-fixed hover:text-primary-fixed-dim"
+					className="h-auto text-muted-foreground text-sm hover:text-foreground"
 					onClick={onSwitchToSignIn}
+					type="button"
 					variant="link"
 				>
 					已有账号？去登录

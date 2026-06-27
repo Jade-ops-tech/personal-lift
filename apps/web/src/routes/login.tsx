@@ -9,25 +9,24 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginScreen() {
-	const [showSignIn, setShowSignIn] = useState(false);
+	const [showSignIn, setShowSignIn] = useState(true);
 
 	return (
-		<div className="relative flex min-h-svh items-center justify-center overflow-hidden px-margin-mobile py-12 font-body-md text-on-surface">
-			{/* 网格点阵背景 */}
+		<div className="relative flex min-h-svh items-center justify-center overflow-hidden px-margin-mobile py-10 text-foreground">
 			<div
-				className="pointer-events-none absolute inset-0 opacity-[0.05]"
+				className="pointer-events-none absolute inset-0 opacity-40"
 				style={{
-					backgroundImage: "radial-gradient(#00dbe7 0.5px, transparent 0.5px)",
-					backgroundSize: "20px 20px",
+					background:
+						"radial-gradient(circle at top, rgba(116, 245, 255, 0.12), transparent 34rem)",
 				}}
 			/>
-			<div className="relative w-full max-w-md">
-				<div className="mb-10 text-center">
-					<div className="font-bold font-headline-md text-2xl text-primary-fixed tracking-tighter drop-shadow-[0_0_10px_rgba(0,219,231,0.5)]">
-						NEURAL_OS
+			<div className="relative w-full max-w-[min(440px,calc(100vw-2rem))]">
+				<div className="mb-8 text-center">
+					<div className="font-bold text-2xl text-foreground">
+						Personal Lift
 					</div>
-					<p className="mt-2 font-label-mono text-label-mono text-on-surface-variant uppercase tracking-[0.2em]">
-						神经接入认证
+					<p className="mt-2 text-muted-foreground text-sm">
+						登录后继续整理记录、待办和总结
 					</p>
 				</div>
 				{showSignIn ? (
