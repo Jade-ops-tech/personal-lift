@@ -5,7 +5,7 @@ import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
 
-import { authClient, clearCachedSession } from "@/lib/auth-client";
+import { authClient, waitForSession } from "@/lib/auth-client";
 
 import Loader from "./loader";
 
@@ -25,36 +25,36 @@ export default function SignUpForm({
 			name: "",
 		},
 		onSubmit: async ({ value }) => {
-			await authClient.signUp.email(
-				{
-					email: value.email,
-					password: value.password,
-					name: value.name,
-				},
-				{
-					onSuccess: async () => {
-						await authClient.signIn.email(
-							{
-								email: value.email,
-								password: value.password,
-							},
-							{
-								onSuccess: () => {
-									clearCachedSession();
-									toast.success("注册成功，已自动登录");
-									window.location.assign(redirectTo);
-								},
-								onError: (error) => {
-									toast.error(error.error.message || error.error.statusText);
-								},
-							}
-						);
-					},
-					onError: (error) => {
-						toast.error(error.error.message || error.error.statusText);
-					},
-				}
-			);
+			const signUpResult = await authClient.signUp.email({
+				email: value.email,
+				password: value.password,
+				name: value.name,
+			});
+			if (signUpResult.error) {
+				toast.error(
+					signUpResult.error.message || signUpResult.error.statusText
+				);
+				return;
+			}
+
+			const signInResult = await authClient.signIn.email({
+				email: value.email,
+				password: value.password,
+			});
+			if (signInResult.error) {
+				toast.error(
+					signInResult.error.message || signInResult.error.statusText
+				);
+				return;
+			}
+
+			const session = await waitForSession();
+			if (!session.data) {
+				toast.error("注册成功但自动登录失败，请手动登录");
+				return;
+			}
+			toast.success("注册成功，已自动登录");
+			window.location.replace(redirectTo);
 		},
 		validators: {
 			onSubmit: z.object({

@@ -3,6 +3,9 @@ import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
 	baseURL: env.VITE_SERVER_URL,
+	fetchOptions: {
+		credentials: "include",
+	},
 });
 
 type SessionResult = Awaited<ReturnType<typeof authClient.getSession>>;
@@ -26,12 +29,30 @@ export function getCachedSession(): Promise<SessionResult> {
 	}
 
 	pendingSession = authClient.getSession().then((result) => {
-		cachedSession = {
-			expiresAt: Date.now() + SESSION_CACHE_MS,
-			result,
-		};
+		if (result.data) {
+			cachedSession = {
+				expiresAt: Date.now() + SESSION_CACHE_MS,
+				result,
+			};
+		}
 		pendingSession = null;
 		return result;
 	});
 	return pendingSession;
+}
+
+export async function waitForSession(): Promise<SessionResult> {
+	clearCachedSession();
+	for (let attempt = 0; attempt < 5; attempt += 1) {
+		const result = await authClient.getSession();
+		if (result.data) {
+			cachedSession = {
+				expiresAt: Date.now() + SESSION_CACHE_MS,
+				result,
+			};
+			return result;
+		}
+		await new Promise((resolve) => setTimeout(resolve, 150));
+	}
+	return authClient.getSession();
 }

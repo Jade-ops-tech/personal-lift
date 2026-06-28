@@ -5,7 +5,7 @@ import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
 
-import { authClient, clearCachedSession } from "@/lib/auth-client";
+import { authClient, waitForSession } from "@/lib/auth-client";
 
 import Loader from "./loader";
 
@@ -24,22 +24,22 @@ export default function SignInForm({
 			password: "",
 		},
 		onSubmit: async ({ value }) => {
-			await authClient.signIn.email(
-				{
-					email: value.email,
-					password: value.password,
-				},
-				{
-					onSuccess: () => {
-						clearCachedSession();
-						toast.success("登录成功");
-						window.location.assign(redirectTo);
-					},
-					onError: (error) => {
-						toast.error(error.error.message || error.error.statusText);
-					},
-				}
-			);
+			const result = await authClient.signIn.email({
+				email: value.email,
+				password: value.password,
+			});
+			if (result.error) {
+				toast.error(result.error.message || result.error.statusText);
+				return;
+			}
+
+			const session = await waitForSession();
+			if (!session.data) {
+				toast.error("登录成功但会话还没建立，请再试一次");
+				return;
+			}
+			toast.success("登录成功");
+			window.location.replace(redirectTo);
 		},
 		validators: {
 			onSubmit: z.object({
