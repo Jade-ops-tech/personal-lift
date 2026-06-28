@@ -5,7 +5,7 @@ import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient, clearCachedSession } from "@/lib/auth-client";
 
 import Loader from "./loader";
 
@@ -31,6 +31,7 @@ export default function SignInForm({
 				},
 				{
 					onSuccess: () => {
+						clearCachedSession();
 						toast.success("登录成功");
 						window.location.assign(redirectTo);
 					},

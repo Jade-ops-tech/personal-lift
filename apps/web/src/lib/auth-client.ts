@@ -11,6 +11,11 @@ const SESSION_CACHE_MS = 5 * 60 * 1000;
 let cachedSession: { expiresAt: number; result: SessionResult } | null = null;
 let pendingSession: Promise<SessionResult> | null = null;
 
+export function clearCachedSession(): void {
+	cachedSession = null;
+	pendingSession = null;
+}
+
 export function getCachedSession(): Promise<SessionResult> {
 	const now = Date.now();
 	if (cachedSession && cachedSession.expiresAt > now) {

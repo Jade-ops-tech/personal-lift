@@ -5,7 +5,7 @@ import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient, clearCachedSession } from "@/lib/auth-client";
 
 import Loader from "./loader";
 
@@ -32,9 +32,23 @@ export default function SignUpForm({
 					name: value.name,
 				},
 				{
-					onSuccess: () => {
-						toast.success("注册成功");
-						window.location.assign(redirectTo);
+					onSuccess: async () => {
+						await authClient.signIn.email(
+							{
+								email: value.email,
+								password: value.password,
+							},
+							{
+								onSuccess: () => {
+									clearCachedSession();
+									toast.success("注册成功，已自动登录");
+									window.location.assign(redirectTo);
+								},
+								onError: (error) => {
+									toast.error(error.error.message || error.error.statusText);
+								},
+							}
+						);
 					},
 					onError: (error) => {
 						toast.error(error.error.message || error.error.statusText);
