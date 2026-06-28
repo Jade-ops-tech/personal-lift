@@ -2,7 +2,6 @@ import { Button } from "@personal-lift/ui/components/button";
 import { Input } from "@personal-lift/ui/components/input";
 import { Label } from "@personal-lift/ui/components/label";
 import { useForm } from "@tanstack/react-form";
-import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -12,12 +11,11 @@ import Loader from "./loader";
 
 export default function SignInForm({
 	onSwitchToSignUp,
+	redirectTo = "/h5",
 }: {
 	onSwitchToSignUp: () => void;
+	redirectTo?: string;
 }) {
-	const navigate = useNavigate({
-		from: "/",
-	});
 	const { isPending } = authClient.useSession();
 
 	const form = useForm({
@@ -33,10 +31,8 @@ export default function SignInForm({
 				},
 				{
 					onSuccess: () => {
-						navigate({
-							to: "/h5",
-						});
 						toast.success("登录成功");
+						window.location.assign(redirectTo);
 					},
 					onError: (error) => {
 						toast.error(error.error.message || error.error.statusText);

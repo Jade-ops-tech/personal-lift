@@ -4,7 +4,7 @@ import { and, desc, eq, gte, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 import { protectedProcedure, router } from "../index";
-import { recognize } from "../recognition";
+import { aiRecognitionConfigSchema, recognize } from "../recognition";
 import { attachTags, setTags } from "../tags";
 
 const categoryEnum = z.enum(["学习", "工作", "生活", "想法", "待办", "其他"]);
@@ -23,9 +23,14 @@ function startOfToday(): Date {
 
 export const recordRouter = router({
 	create: protectedProcedure
-		.input(z.object({ content: z.string().trim().min(1) }))
+		.input(
+			z.object({
+				ai: aiRecognitionConfigSchema.optional(),
+				content: z.string().trim().min(1),
+			})
+		)
 		.mutation(async ({ ctx, input }) => {
-			const result = await recognize(input.content, new Date());
+			const result = await recognize(input.content, new Date(), input.ai);
 			const [row] = await db
 				.insert(record)
 				.values({
@@ -48,10 +53,7 @@ export const recordRouter = router({
 				throw new Error("创建记录失败");
 			}
 			await attachTags(row.id, result.tags);
-			return db.query.record.findFirst({
-				where: eq(record.id, row.id),
-				with: recordWithTags,
-			});
+			return row;
 		}),
 
 	listToday: protectedProcedure.query(({ ctx }) =>

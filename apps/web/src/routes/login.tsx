@@ -5,11 +5,19 @@ import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
 
 export const Route = createFileRoute("/login")({
+	validateSearch: (search): { redirect?: string } => ({
+		redirect:
+			typeof search.redirect === "string" && search.redirect.startsWith("/")
+				? search.redirect
+				: undefined,
+	}),
 	component: LoginScreen,
 });
 
 function LoginScreen() {
 	const [showSignIn, setShowSignIn] = useState(true);
+	const { redirect } = Route.useSearch();
+	const redirectTo = redirect ?? "/h5";
 
 	return (
 		<div className="relative flex min-h-svh items-center justify-center overflow-hidden px-margin-mobile py-10 text-foreground">
@@ -30,9 +38,15 @@ function LoginScreen() {
 					</p>
 				</div>
 				{showSignIn ? (
-					<SignInForm onSwitchToSignUp={() => setShowSignIn(false)} />
+					<SignInForm
+						onSwitchToSignUp={() => setShowSignIn(false)}
+						redirectTo={redirectTo}
+					/>
 				) : (
-					<SignUpForm onSwitchToSignIn={() => setShowSignIn(true)} />
+					<SignUpForm
+						onSwitchToSignIn={() => setShowSignIn(true)}
+						redirectTo={redirectTo}
+					/>
 				)}
 			</div>
 		</div>

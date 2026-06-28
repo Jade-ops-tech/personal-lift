@@ -3,6 +3,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { type FormEvent, useState } from "react";
 
 import { H5AppShell } from "@/components/h5-app-shell";
+import {
+	AI_PROVIDER_OPTIONS,
+	type AiProvider,
+	type AiRecognitionSettings,
+	loadAiRecognitionSettings,
+	modelForProvider,
+	saveAiRecognitionSettings,
+} from "@/lib/ai-recognition-settings";
 import { categoryStyle, formatHM } from "@/lib/neural";
 import { trpc } from "@/utils/trpc";
 
@@ -15,6 +23,10 @@ const DAILY_LOAD_TARGET = 10;
 
 function RecordStreamScreen() {
 	const [content, setContent] = useState("");
+	const [aiSettings, setAiSettings] = useState<AiRecognitionSettings>(
+		loadAiRecognitionSettings
+	);
+	const [showAiSettings, setShowAiSettings] = useState(false);
 	const records = useQuery(trpc.record.listToday.queryOptions());
 
 	const createMutation = useMutation(
@@ -30,8 +42,33 @@ function RecordStreamScreen() {
 		e.preventDefault();
 		const trimmed = content.trim();
 		if (trimmed) {
-			createMutation.mutate({ content: trimmed });
+			createMutation.mutate({
+				ai:
+					aiSettings.apiKey.trim() && aiSettings.model.trim()
+						? {
+								apiKey: aiSettings.apiKey.trim(),
+								baseUrl: aiSettings.baseUrl.trim() || undefined,
+								model: aiSettings.model.trim(),
+								provider: aiSettings.provider,
+							}
+						: undefined,
+				content: trimmed,
+			});
 		}
+	};
+
+	const updateAiSettings = (next: AiRecognitionSettings) => {
+		setAiSettings(next);
+		saveAiRecognitionSettings(next);
+	};
+
+	const handleProviderChange = (provider: AiProvider) => {
+		updateAiSettings({
+			...aiSettings,
+			baseUrl: provider === "custom" ? aiSettings.baseUrl : "",
+			model: modelForProvider(provider),
+			provider,
+		});
 	};
 
 	const items = records.data ?? [];
@@ -68,16 +105,101 @@ function RecordStreamScreen() {
 						</div>
 						<div className="mt-4 flex items-center justify-between border-outline-variant/10 border-t pt-4">
 							<span className="font-label-mono text-label-mono text-on-surface-variant/60">
-								AI 自动识别分类与标签
+								{aiSettings.apiKey.trim()
+									? "模型识别分类与标签"
+									: "规则识别分类与标签"}
 							</span>
-							<button
-								className="rounded-[4px] bg-primary-container px-6 py-2 font-bold font-label-mono text-label-mono text-on-primary-fixed shadow-[0_0_15px_rgba(0,242,255,0.3)] transition-transform active:scale-95 disabled:opacity-50"
-								disabled={createMutation.isPending || !content.trim()}
-								type="submit"
-							>
-								{createMutation.isPending ? "写入中…" : "初始化"}
-							</button>
+							<div className="flex items-center gap-2">
+								<button
+									aria-expanded={showAiSettings}
+									className="rounded-[4px] border border-outline-variant/20 px-3 py-2 font-label-mono text-label-mono text-on-surface-variant transition-colors hover:border-primary-fixed/50 hover:text-primary-fixed"
+									onClick={() => setShowAiSettings((current) => !current)}
+									type="button"
+								>
+									模型
+								</button>
+								<button
+									className="rounded-[4px] bg-primary-container px-6 py-2 font-bold font-label-mono text-label-mono text-on-primary-fixed shadow-[0_0_15px_rgba(0,242,255,0.3)] transition-transform active:scale-95 disabled:opacity-50"
+									disabled={createMutation.isPending || !content.trim()}
+									type="submit"
+								>
+									{createMutation.isPending ? "写入中…" : "初始化"}
+								</button>
+							</div>
 						</div>
+						{showAiSettings ? (
+							<div className="mt-4 grid gap-3 border-outline-variant/10 border-t pt-4 md:grid-cols-[1fr_1fr]">
+								<label className="space-y-1">
+									<span className="font-label-mono text-label-mono-sm text-on-surface-variant">
+										服务
+									</span>
+									<select
+										className="h-10 w-full rounded-[4px] border border-outline-variant/20 bg-surface-container px-3 text-body-md text-on-surface"
+										onChange={(e) =>
+											handleProviderChange(e.target.value as AiProvider)
+										}
+										value={aiSettings.provider}
+									>
+										{AI_PROVIDER_OPTIONS.map((option) => (
+											<option key={option.value} value={option.value}>
+												{option.label}
+											</option>
+										))}
+									</select>
+								</label>
+								<label className="space-y-1">
+									<span className="font-label-mono text-label-mono-sm text-on-surface-variant">
+										模型
+									</span>
+									<input
+										className="h-10 w-full rounded-[4px] border border-outline-variant/20 bg-surface-container px-3 text-body-md text-on-surface"
+										onChange={(e) =>
+											updateAiSettings({
+												...aiSettings,
+												model: e.target.value,
+											})
+										}
+										placeholder="gpt-4o-mini"
+										value={aiSettings.model}
+									/>
+								</label>
+								<label className="space-y-1 md:col-span-2">
+									<span className="font-label-mono text-label-mono-sm text-on-surface-variant">
+										API Key
+									</span>
+									<input
+										className="h-10 w-full rounded-[4px] border border-outline-variant/20 bg-surface-container px-3 text-body-md text-on-surface"
+										onChange={(e) =>
+											updateAiSettings({
+												...aiSettings,
+												apiKey: e.target.value,
+											})
+										}
+										placeholder="留空使用规则识别"
+										type="password"
+										value={aiSettings.apiKey}
+									/>
+								</label>
+								{aiSettings.provider === "custom" ? (
+									<label className="space-y-1 md:col-span-2">
+										<span className="font-label-mono text-label-mono-sm text-on-surface-variant">
+											接口地址
+										</span>
+										<input
+											className="h-10 w-full rounded-[4px] border border-outline-variant/20 bg-surface-container px-3 text-body-md text-on-surface"
+											onChange={(e) =>
+												updateAiSettings({
+													...aiSettings,
+													baseUrl: e.target.value,
+												})
+											}
+											placeholder="https://example.com/v1/chat/completions"
+											value={aiSettings.baseUrl}
+										/>
+									</label>
+								) : null}
+							</div>
+						) : null}
 					</form>
 				</section>
 
